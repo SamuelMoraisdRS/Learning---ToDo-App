@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.validation.OverridesAttribute.List;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 // import jakarta.persistence.GenerationType;
@@ -142,7 +144,8 @@ public class User {
     }
 
     
-
-    // private List<Task> = new ArrayList<Task>();
+    // Um user para varias tasks
+    @OneToMany(mappedBy = "user")
+    private java.util.List<Tasks> taskList = new ArrayList<Tasks>();
     
 }
