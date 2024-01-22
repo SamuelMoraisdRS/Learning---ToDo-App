@@ -69,6 +69,10 @@ public class User {
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 100)
     private String password;
 
+    // Um user para varias tasks
+    @OneToMany(mappedBy = "user")
+    private java.util.List<Tasks> taskList = new ArrayList<Tasks>();
+
     // O spring precisa q a classe tenha um construtor vazio
     public User() {
     }
@@ -103,6 +107,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public java.util.List<Tasks> getTasks() {
+        return taskList;
     }
 
     // Definimos nossa propria checagem de igual
@@ -144,8 +152,6 @@ public class User {
     }
 
     
-    // Um user para varias tasks
-    @OneToMany(mappedBy = "user")
-    private java.util.List<Tasks> taskList = new ArrayList<Tasks>();
+    
     
 }

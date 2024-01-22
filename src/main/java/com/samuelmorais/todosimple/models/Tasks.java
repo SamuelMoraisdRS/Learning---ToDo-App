@@ -36,12 +36,10 @@ public class Tasks {
      */
     // Usuário que pode realizar a task
     // Os usuarios terao listas de tasks possiveis
+    // Cria uma colunade junção, ou chave estrangeira, para criar referencias entre vários objetos task e um
+    // objeto user.
     @ManyToOne  // Anotacao que indica que vários objetos Task serao associadas um usuario
-    // JoinColumn é uma associacao entre tabelas
-    /*
-     * A partir de duas entitys (tabelas), a operacao de join consiste me estabeler uma relacao entre elas
-     * usando uma coluna de cada. Essa relacao é definida utilizando anotacoes (onetomany, manytoone, etc)
-     */
+    // JoinColumn é usando para especificar as características da coluna de junção
     @JoinColumn(name = "user_id", nullable = false, updatable = false) // A coluna de referencias a objetos user
     // updatable diz se essa relacao com o objeto pode ser alterada
     private User user;
