@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.samuelmorais.todosimple.models.User;
 import com.samuelmorais.todosimple.repositories.TasksRepository;
@@ -17,7 +18,8 @@ import com.samuelmorais.todosimple.repositories.TasksRepository;
  * criaremos o arquivo service, que cuidará dos pedidos de requisicao ao banco de dados presentes na camada model.
  *
  */
-
+// Anotacao necessaria para o spring achar o service
+@Service
 public class UserService {
     /*
      * Instanciamos obejtos das interfaces para podermos utilizar seus métodos
@@ -26,9 +28,9 @@ public class UserService {
      * presentes na sua declaracao. Logo, o compilador sabera q trata-se de um repository e não pedirá um construtor
      */
     @Autowired
-    static private UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    static private TasksRepository taskRepository;
+    private TasksRepository taskRepository;
 
     /*model contem as estruturas de dados!!!!! somente, servieces tem as operacoes */
 
@@ -49,9 +51,9 @@ public class UserService {
     @Transactional
     public User create(User object) {
         object.setId(null);
-        object = userRepository.save(object);
+        object = this.userRepository.save(object);
         // taskRepository é uma interface, ele tem apenas métodos
-        taskRepository.saveAll(object.getTasks());
+        this.taskRepository.saveAll(object.getTasks());
         return object;
     }
 
@@ -61,7 +63,7 @@ public class UserService {
     public User update(User object) {
         User newUser = findByID(object.getId());
         newUser.setPassword(object.getPassword());
-        return userRepository.save(newUser);
+        return this.userRepository.save(newUser);
 
     }
 
@@ -71,7 +73,7 @@ public class UserService {
         findByID(id);
         // O erro que pode acontecer é o dados ter relacoes dentro do banco
         try {
-            userRepository.deleteById(id);
+            this.userRepository.deleteById(id);
         } catch (Exception e) {
             // A excecao sera aquela do caso da entidade estar relacionada a alguma outra entidade
             throw new RuntimeException("Usuário não encontrado. " + "Id: " + id + "\n");

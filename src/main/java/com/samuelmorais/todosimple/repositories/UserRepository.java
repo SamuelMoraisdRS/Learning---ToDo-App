@@ -1,6 +1,7 @@
 package com.samuelmorais.todosimple.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.samuelmorais.todosimple.models.User;
 
@@ -15,7 +16,7 @@ import com.samuelmorais.todosimple.models.User;
  * ESSA É UMA FORMA E AUTOMATIZAR AS CHAMADAS AO BANCO DE DADOS
  */
 
- 
+ @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     
 }

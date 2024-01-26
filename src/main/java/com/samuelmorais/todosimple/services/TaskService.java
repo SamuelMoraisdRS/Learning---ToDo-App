@@ -1,16 +1,14 @@
 package com.samuelmorais.todosimple.services;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import com.samuelmorais.todosimple.models.Tasks;
 import com.samuelmorais.todosimple.models.User;
 import com.samuelmorais.todosimple.repositories.TasksRepository;
-import com.samuelmorais.todosimple.repositories.UserRepository;
 
-import clojure.lang.ASeq;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -28,6 +26,11 @@ public class TaskService {
         Optional<Tasks> obj = tasksRepository.findById(id);
         return obj.orElseThrow();
     }
+
+    public List<Tasks> findAllByUserId(Long user_id) {
+        return tasksRepository.findByUser_Id(user_id);
+    }
+
     @Transactional
     public Tasks create(Tasks obj) {
         // checa se o usuario associado a task existe. O user associado à task é definido na própria task
@@ -57,7 +60,7 @@ public class TaskService {
         Tasks obj = findByID(id);
         // Precisamos do try catch pois se houverem entidades relacionadas ao elemento que queremos deletar, haverá erro
         try {
-            tasksRepository.delete(obj);
+            this.tasksRepository.delete(obj);
         } catch (Exception e) {
             throw new RuntimeException("Não é possível apagar pois há entidades relacionadas");    
         }

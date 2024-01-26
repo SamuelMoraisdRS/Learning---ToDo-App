@@ -8,7 +8,6 @@ package com.samuelmorais.todosimple.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import jakarta.validation.OverridesAttribute.List;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +15,7 @@ import jakarta.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -108,7 +108,9 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    // Essa anotação delimita que este dado não será retornado na forma de arquivo JSON qndo forem feitas requisiçoes 
+    // ao usuário
+    @JsonIgnore
     public java.util.List<Tasks> getTasks() {
         return taskList;
     }
