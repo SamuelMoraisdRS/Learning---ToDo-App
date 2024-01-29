@@ -4,6 +4,14 @@ package com.samuelmorais.todosimple.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
@@ -13,13 +21,18 @@ import jakarta.persistence.JoinColumn;
 
 import java.util.Objects;
 @Entity
-@Table(name = Tasks.TABLE_NAME)
+@Table(name = Tasks.TABLE_NAME) //Estamos modelando um banco de dados SQL a partir da classe (criando uma tabela)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Tasks {
     public static final String TABLE_NAME = "tasks";
 
-    // Temos que criar uma tabela pras tasks. Todas as tabelas tem id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Essa anotacao manda o valor ser gerado automaticamente, diz q o valor é uma id (identity)
+    @Column(name = "id", unique = true)
     private Long id;
 
 
@@ -41,81 +54,10 @@ public class Tasks {
 
     // Descricao do que a task vai fazer
     @Column(name = "description", length = 250, nullable = false)
+    @NotNull
+    @NotEmpty
+    @Size(min = 1, max = 255)
     private String description;
-
-
-    public Tasks() {
-    }
-
-    public Tasks(Long id, User user, String description) {
-        this.id = id;
-        this.user = user;
-        this.description = description;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Tasks id(Long id) {
-        setId(id);
-        return this;
-    }
-
-    public Tasks user(User user) {
-        setUser(user);
-        return this;
-    }
-
-    public Tasks description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Tasks)) {
-            return false;
-        }
-        Tasks tasks = (Tasks) o;
-        return Objects.equals(id, tasks.id) && Objects.equals(user, tasks.user) && Objects.equals(description, tasks.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, description);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " id='" + getId() + "'" +
-            ", user='" + getUser() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
-    }
 
     // Static -> é uma característica do tipo, não de um objeto
 

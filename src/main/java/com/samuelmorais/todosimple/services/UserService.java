@@ -53,7 +53,7 @@ public class UserService {
         object.setId(null);
         object = this.userRepository.save(object);
         // taskRepository é uma interface, ele tem apenas métodos
-        this.taskRepository.saveAll(object.getTasks());
+        this.taskRepository.saveAll(object.getTaskList());
         return object;
     }
 
