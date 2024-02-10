@@ -44,4 +44,4 @@ async function getAPI(url) {
     show(data);
 }
 
-getAPI(url);
+window.onload(getAPI(url));
