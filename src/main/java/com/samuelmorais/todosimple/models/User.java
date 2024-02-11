@@ -8,6 +8,9 @@ package com.samuelmorais.todosimple.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,8 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,9 +40,9 @@ import java.util.Objects;
 // Essa classe irá representar um usuario do site
 
 @Entity // Definir a classe como entidade diz ao banco de dados (sql) que deve criar uma TABELA para estes objetos
-@Table(name = User.TABLE_NAME) // Esta anotação irá declarar as características da tabela 
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = User.TABLE_NAME) // Esta anotação irá declarar as características da tabela (Se nao especificarmos, a tabela tera informacoes padrao)
+@AllArgsConstructor 	// Cria construtores com todos os argumentos
+@NoArgsConstructor      // Cria construtores vazios, necessarios para a operacao do SpringBoot
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -64,9 +66,10 @@ public class User {
     @JsonProperty(access = Access.WRITE_ONLY)   // Não retorna a senha para o frontend em momento algum, será permitida apenas a escrita da senha
     @Column(name = "password", length = 60, nullable = false)
     @NotNull(groups = {CreateUser.class, UpdateUser.class})
+    @NotEmpty(groups = {CreateUser.class, UpdateUser.class})
     @Size(groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 100)
     private String password;
-
+    
     // Um user para varias tasks
     @OneToMany(mappedBy = "user")
     @JsonProperty(access = Access.WRITE_ONLY)   // Qndo houver uma resposta JSON, deve retornar as tasks

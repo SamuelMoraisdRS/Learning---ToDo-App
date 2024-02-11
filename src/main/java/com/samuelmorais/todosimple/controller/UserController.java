@@ -6,6 +6,7 @@ import com.samuelmorais.todosimple.models.User;
 import com.samuelmorais.todosimple.models.User.CreateUser;
 import com.samuelmorais.todosimple.models.User.UpdateUser;
 import com.samuelmorais.todosimple.services.UserService;
+
 import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * Essa é a camada da arquitetura que fará a comunicacao das requisicoes recebidas do front end com a camada de service
@@ -32,25 +35,20 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+  
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) { // PathVariable informa que a id deve ser extraida da uri
         User obj = userService.findByID(id);
-        return ResponseEntity.ok().body(obj); // Ok -> Mensagem associada à resposta do servidor, no caso, ok significa
-                                              // a execuçao sem erros
-                                              // body -> informa os dados associados ao body
-
-        /*
-         * Nas mensagens http, o header contem as informacoes referentes ao envio e a natureza da requisicao/resposta
-         * e o body contem os dados associados (PUT, POST e a resposta do GET tem dados associados)
-         */
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
     @Validated(CreateUser.class)    // A operacao deve ser validada (aprovada ou  n) utilizando as anotacoes aplicadas à
-                                    // interface
     public ResponseEntity<Void> create(@Valid @RequestBody User obj) {
+        logger.debug("Debug na requisição Create User {}", obj);
         userService.create(obj);
-        
         // ServletUriComponentsBuilder é um objeto utilizado para construir URIs
         // path -> adiciona o caminho à rota atual
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").
