@@ -1,0 +1,12 @@
+#title {
+    color: rgb(77, 137, 139);
+    text-align: center;
+}
+#subtitle {
+    color: cadetblue;
+    text-align: center;
+    opacity: 0.5;
+}
+body {
+    background-image: url(Imgs/fundo2.png);
+}
